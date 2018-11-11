@@ -14,6 +14,11 @@ And then run `bundle install`.
 
 ## Usage
 
+You will need to download the public key used by the Raven service to sign responses and store it somewhere that is not writable by your web application.
+Download the PEM formated PKCS#1 RSA public key from the Raven project pages [here](https://raven.cam.ac.uk/project/keys/).
+You will also need the key ID that is currently in use - as of August 2004 this is 2.
+From this point on, we assume the full UNIX path and key ID are in the KEY_PATH and KEY_ID environment variables respectively.
+
 You can integrate the strategy into your middleware in a `config.ru`:
 
 ```ruby
@@ -22,7 +27,7 @@ use OmniAuth::Builder do
 end
 ```
 
-If you're using Rails, you'll want to add to the middleware stack:
+If you're using Rails, you'll want to add the following to an initialisers eg. `config/initializers/omniauth.rb` and then restart your application:
 
 ```ruby
 Rails.application.config.middleware.use OmniAuth::Builder do
