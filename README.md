@@ -35,12 +35,19 @@ Rails.application.config.middleware.use OmniAuth::Builder do
 end
 ```
 
-For a full list of options that you can configure when setting `:ucamraven` as provider you will need to look
+For a full list of options that you can configure when setting `:ucamraven` as your strategy you will need to look
 [here](https://github.com/CHTJonas/omniauth-ucam-raven/blob/master/lib/omniauth/strategies/ucam-raven.rb#L13) in the source code.
+An options hash can be appended to the arguments when `provider` is called, for example:
+
+```ruby
+use OmniAuth::Builder do
+  provider :ucamraven, ENV['KEY_ID'], ENV['KEY_PATH'], { desc: 'my description', msg: 'my message' }
+end
+```
+
+See the code for the [example Sinatra app](https://github.com/CHTJonas/omniauth-ucam-raven/blob/master/examples/sinatra) for a hands-on example of this.
 
 For additional information, please refer to the [OmniAuth wiki](https://github.com/intridea/omniauth/wiki).
-
-See the code for the [example Sinatra app](https://github.com/CHTJonas/omniauth-ucam-raven/blob/master/examples/sinatra/config.ru) for a hands-on example.
 
 ## License
 

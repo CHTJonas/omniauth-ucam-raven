@@ -1,6 +1,4 @@
 source 'https://rubygems.org'
 
 gem 'sinatra'
-gem 'omniauth'
-gem 'omniauth-ucam-raven', :path => '../../'
-gem 'multi_json'
+gem 'omniauth-ucam-raven'

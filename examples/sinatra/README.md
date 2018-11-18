@@ -8,5 +8,6 @@ At the time of writing (November 2018), the key ID in use to sign responses was 
 
 1. `git clone https://github.com/chtjonas/omniauth-ucam-raven.git`
 2. `cd omniauth-ucam-raven/examples/sinatra`
-3. Run the `rackup` command
-4. Navigate to http://localhost:4567 and complete the login process
+3. `bundle install`
+4. `bundle exec rackup`
+5. Navigate to http://localhost:4567

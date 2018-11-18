@@ -46,7 +46,7 @@ module OmniAuth
       def callback_phase
         # Check we get what we're expecting.
         if wls_response.nil? || wls_response == ""
-      		return fail!(:wls_response_not_present)
+          return fail!(:wls_response_not_present)
         end
         return fail!(:authentication_cancelled_by_user) if wls_response[1].to_i == 410
         return fail!(:no_mutually_acceptable_authentication_types_available) if wls_response[1].to_i == 510
@@ -66,7 +66,7 @@ module OmniAuth
         return fail!(:skew_too_large) unless skew < options.skew
 
         # Check the key id.
-    		return fail!(:unexpected_rsa_key_id) unless wls_response[12].to_i == options.key_id
+        return fail!(:unexpected_rsa_key_id) unless wls_response[12].to_i == options.key_id
 
         # Check the response RSA signature.
         signed_part = wls_response.first(12).join('!')
@@ -74,7 +74,7 @@ module OmniAuth
         signature = Base64.decode64(base64_part)
         key = OpenSSL::PKey::RSA.new File.read options.key_path
         digest  = OpenSSL::Digest::SHA1.new
-    		return fail!(:rsa_signature_check_failed) unless key.verify(digest, signature, signed_part)
+        return fail!(:rsa_signature_check_failed) unless key.verify(digest, signature, signed_part)
 
         # Done all we need to do; call super.
         super
