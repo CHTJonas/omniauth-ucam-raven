@@ -1,8 +1,8 @@
 # Sinatra Example
 
 This example clearly demonstrates how to use the omniauth-ucam-raven strategy with a simple Sinatra web app.
-You will need to download the RSA public key from the Raven project pages [here](https://raven.cam.ac.uk/project/keys/) before you continue.
-At the time of writing (November 2018), the key ID in use to sign responses was number two.
+You will need to download the Raven service RSA public key pro tempore in PEM format from the project pages [here](https://raven.cam.ac.uk/project/keys/) and edit the path in `ucamravenexample.rb`.
+At the time of writing (April 2020), the key ID being used to sign responses is 2.
 
 ## Setup
 

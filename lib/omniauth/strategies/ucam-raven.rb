@@ -13,7 +13,7 @@ module OmniAuth
 
       # Query parameters to pass to the WLS.
       # By choice, we only use version 3 so we can support Raven for Life.
-      # See: https://raven.cam.ac.uk/project/waa2wls-protocol.txt
+      # See: https://github.com/cambridgeuniversity/UcamWebauth-protocol/blob/master/waa2wls-protocol.txt
       option :url, 'https://raven.cam.ac.uk/auth/authenticate.html'
       option :desc, nil
       option :aauth, nil

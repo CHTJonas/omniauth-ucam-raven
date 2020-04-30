@@ -12,22 +12,14 @@ gem 'omniauth-ucam-raven'
 
 And then run `bundle install`.
 
+You then need to download the Raven service RSA public key pro tempore in PEM format from the project pages [here](https://raven.cam.ac.uk/project/keys/) and store it somewhere that is not writable by your web application.
+You also need to note the key ID which at the time of writing (April 2020) is 2.
+
 ## Usage
 
-You will need to download the public key used by the Raven service to sign responses and store it somewhere that is not writable by your web application.
-Download the PEM formated PKCS#1 RSA public key from the Raven project pages [here](https://raven.cam.ac.uk/project/keys/).
-You will also need the key ID that is currently in use - as of August 2004 this is 2.
-From this point on, we assume the full UNIX path and key ID are in the KEY_PATH and KEY_ID environment variables respectively.
+From this point on, it's assumed that the full UNIX file path and key ID are stored in the `KEY_PATH` and `KEY_ID` environment variables respectively.
 
-You can integrate the strategy into your middleware in a `config.ru`:
-
-```ruby
-use OmniAuth::Builder do
-  provider :ucamraven, ENV['KEY_ID'], ENV['KEY_PATH']
-end
-```
-
-If you're using Rails, you'll want to add the following to an initialisers eg. `config/initializers/omniauth.rb` and then restart your application:
+If you're using Rails, you'll want to add the following to an initialisers e.g. `config/initializers/omniauth.rb` and then restart your application server:
 
 ```ruby
 Rails.application.config.middleware.use OmniAuth::Builder do
@@ -35,17 +27,39 @@ Rails.application.config.middleware.use OmniAuth::Builder do
 end
 ```
 
-For a full list of options that you can configure when setting `:ucamraven` as your strategy you will need to look
-[here](https://github.com/CHTJonas/omniauth-ucam-raven/blob/master/lib/omniauth/strategies/ucam-raven.rb#L13) in the source code.
-An options hash can be appended to the arguments when `provider` is called, for example:
+For Sinatra and other Rack-based frameworks, you can integrate the strategy into your middleware e.g. in a `config.ru`:
 
 ```ruby
 use OmniAuth::Builder do
-  provider :ucamraven, ENV['KEY_ID'], ENV['KEY_PATH'], { desc: 'my description', msg: 'my message' }
+  provider :ucamraven, ENV['KEY_ID'], ENV['KEY_PATH']
 end
 ```
 
-See the code for the [example Sinatra app](https://github.com/CHTJonas/omniauth-ucam-raven/blob/master/examples/sinatra) for a hands-on example of this.
+Upon authentication, the user's details will be available in the `request.env['omniauth.auth']` object as show below. Each field is well documented in the [protocol specification](https://github.com/cambridgeuniversity/UcamWebauth-protocol/blob/6e70f1f0223bc30f6963bdb79e06214a482a512e/waa2wls-protocol.txt#L231).
+
+```
+{
+  "provider"=>"ucamraven",
+  "uid"=>"crsid",
+  "info"=>{"name"=>nil, "email"=>"crsid@cam.ac.uk", "ptags"=>["current"]},
+  "credentials"=>{"auth"=>"", "sso"=>["pwd"]},
+  "extra"=>{"id"=>"dateandtime", "lifetime"=>"sessionlifetime", "parameters"=>"your params string returned to you"}
+}
+```
+
+## Configuration
+
+The Ucam-Raven strategy will work straight out of the box but you can apply custom configuration if you so desire by appending an options hash to the arguments when `provider` is called, for example:
+
+```ruby
+use OmniAuth::Builder do
+  opts = { desc: 'my description', msg: 'my message', params: 'string to be returned after login', date: true }
+  provider :ucamraven, ENV['KEY_ID'], ENV['KEY_PATH'], opts
+end
+```
+
+See the code for the [example Sinatra app](https://github.com/CHTJonas/omniauth-ucam-raven/blob/master/examples/sinatra) for a hands-on example of this and [here](https://github.com/CHTJonas/omniauth-ucam-raven/blob/master/lib/omniauth/strategies/ucam-raven.rb#L14) for a full list of configurable options.
+Each option is fully documented in the [specification](https://github.com/cambridgeuniversity/UcamWebauth-protocol/blob/6e70f1f0223bc30f6963bdb79e06214a482a512e/waa2wls-protocol.txt#L106).
 
 For additional information, please refer to the [OmniAuth wiki](https://github.com/intridea/omniauth/wiki).
 
