@@ -8,6 +8,7 @@ module OmniAuth
     class UcamRaven
       include OmniAuth::Strategy
 
+      # The name of the strategy.
       option :name, 'ucamraven'
 
       # Query parameters to pass to the WLS.
@@ -171,8 +172,7 @@ module OmniAuth
         s << "%02d" % t.sec
         s << "Z"
         return s
-    	end
-
+      end
     end
   end
 end
