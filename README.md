@@ -52,4 +52,4 @@ For additional information, please refer to the [OmniAuth wiki](https://github.c
 ## License
 
 omniauth-ucam-raven is released under the MIT License.
-Copyright (c) 2018-2019 Charlie Jonas.
+Copyright (c) 2018-2020 Charlie Jonas.
