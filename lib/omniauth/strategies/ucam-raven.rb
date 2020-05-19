@@ -21,7 +21,7 @@ module OmniAuth
       option :msg, nil
       option :params, nil
       option :date, false
-      option :skew, 90
+      option :skew, 45 # the spec states that a time of 30-60 seconds is probably appropriate
       option :fail, nil
 
       # The RSA key ID and the location on the filesystem where it's stored.
@@ -45,7 +45,7 @@ module OmniAuth
         url << "&msg=#{URI::encode options.msg}" if options.msg
         url << "&params=#{URI::encode options.params}" if options.params
         url << "&date=#{date_to_rfc3339}" if options.date
-        # skew is DEPRECATED - we don't pass it to the WLS.
+        # The skew parameter is DEPRECATED and SHOULD NOT be included in requests to the WLS.
         url << "&fail=#{URI::encode options.fail}" if options.fail
         redirect url
       end
@@ -69,6 +69,7 @@ module OmniAuth
         return fail!(:too_many_wls_response_parameters) if wls_response.length > 14
 
         # Check the time skew in seconds.
+        return fail!(:invalid_issue) unless wls_response[3].length == 16
         skew = ((DateTime.now.new_offset(0) - date_from_rfc3339(wls_response[3])) * 24 * 60 * 60).to_i
         return fail!(:skew_too_large) unless skew < options.skew
 
