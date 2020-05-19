@@ -18,6 +18,7 @@ You also need to note the key ID which at the time of writing (April 2020) is 2.
 ## Usage
 
 From this point on, it's assumed that the full UNIX file path and key ID are stored in the `KEY_PATH` and `KEY_ID` environment variables respectively.
+If you do not provide a key file path and/or ID then an exception will be raised.
 
 If you're using Rails, you'll want to add the following to an initialisers e.g. `config/initializers/omniauth.rb` and then restart your application server:
 

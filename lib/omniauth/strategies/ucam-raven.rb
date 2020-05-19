@@ -29,6 +29,12 @@ module OmniAuth
       option :key_path, nil
       args %i[key_id key_path]
 
+      def initialize(*args, &block)
+        super(*args, &block)
+        raise 'Raven public key ID not given' if options.key_id.nil? || options.key_id == ''
+        raise 'Raven public key path not given' if options.key_path.nil? || options.key_path == ''
+      end
+
       def request_phase
         url = "#{options.url}?"
         url << "ver=3"
