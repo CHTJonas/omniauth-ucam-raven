@@ -36,7 +36,8 @@ use OmniAuth::Builder do
 end
 ```
 
-Upon authentication, the user's details will be available in the `request.env['omniauth.auth']` object as show below. Each field is well documented in the [protocol specification](https://github.com/cambridgeuniversity/UcamWebauth-protocol/blob/6e70f1f0223bc30f6963bdb79e06214a482a512e/waa2wls-protocol.txt#L231).
+Upon authentication, the user's details will be available in the `request.env['omniauth.auth']` object as show in the example below. Each field is well documented in the [protocol specification](https://github.com/cambridgeuniversity/UcamWebauth-protocol/blob/6e70f1f0223bc30f6963bdb79e06214a482a512e/waa2wls-protocol.txt#L231).
+It should be noted that the `email` field is for provided convenience only and its presence does not imply that the address contained therein is a valid email address.
 
 ```
 {

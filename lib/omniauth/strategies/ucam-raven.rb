@@ -27,14 +27,16 @@ module OmniAuth
       # The RSA key ID and the location on the filesystem where it's stored.
       option :key_id, nil
       option :key_path, nil
-      args %i[key_id key_path]
+      args [:key_id, :key_path]
 
+      # This method is called when the strategy is instantiated.
       def initialize(*args, &block)
         super(*args, &block)
         raise 'Raven public key ID not given' if options.key_id.nil? || options.key_id == ''
         raise 'Raven public key path not given' if options.key_path.nil? || options.key_path == ''
       end
 
+      # This method is called when the user initiates a login. It redirects them to the Raven service for authentication.
       def request_phase
         url = "#{options.url}?"
         url << "ver=3"
@@ -50,11 +52,10 @@ module OmniAuth
         redirect url
       end
 
+      # This method is called after the user authenticates to Raven and is redirected back to the application.
       def callback_phase
-        # Check we get what we're expecting.
-        if wls_response.nil? || wls_response == ""
-          return fail!(:wls_response_not_present)
-        end
+        # Check the response is in the format we're expecting.
+        return fail!(:wls_response_not_present) if wls_response.nil? || wls_response == ""
         return fail!(:authentication_cancelled_by_user) if wls_response[1].to_i == 410
         return fail!(:no_mutually_acceptable_authentication_types_available) if wls_response[1].to_i == 510
         return fail!(:unsupported_protocol_version) if wls_response[1].to_i == 520
@@ -73,10 +74,10 @@ module OmniAuth
         skew = ((DateTime.now.new_offset(0) - date_from_rfc3339(wls_response[3])) * 24 * 60 * 60).to_i
         return fail!(:skew_too_large) unless skew.abs < options.skew
 
-        # Check the key id.
+        # Check that the RSA key ID is correct.
         return fail!(:unexpected_rsa_key_id) unless wls_response[12].to_i == options.key_id
 
-        # Check the response RSA signature.
+        # Check that the RSA signature is correct..
         signed_part = wls_response.first(12).join('!')
         base64_part = wls_response[13].tr('-._','+/=')
         signature = Base64.decode64(base64_part)
