@@ -71,7 +71,7 @@ module OmniAuth
         # Check the time skew in seconds.
         return fail!(:invalid_issue) unless wls_response[3].length == 16
         skew = ((DateTime.now.new_offset(0) - date_from_rfc3339(wls_response[3])) * 24 * 60 * 60).to_i
-        return fail!(:skew_too_large) unless skew < options.skew
+        return fail!(:skew_too_large) unless skew.abs < options.skew
 
         # Check the key id.
         return fail!(:unexpected_rsa_key_id) unless wls_response[12].to_i == options.key_id
