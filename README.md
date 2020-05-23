@@ -17,14 +17,17 @@ You also need to note the key ID which at the time of writing (April 2020) is 2.
 
 ## Usage
 
+The strategy expects Raven signing key data in the form of an array of key ID & key path tuples.
+This allows multiple signing keys to be supported in order to facilitate key rollover or multiple backend auth servers.
+If you do not provide the key paths and/or IDs in the correct format then an exception will be raised.
 From this point on, it's assumed that the full UNIX file path and key ID are stored in the `KEY_PATH` and `KEY_ID` environment variables respectively.
-If you do not provide a key file path and/or ID then an exception will be raised.
 
 If you're using Rails, you'll want to add the following to an initialisers e.g. `config/initializers/omniauth.rb` and then restart your application server:
 
 ```ruby
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :ucamraven, ENV['KEY_ID'], ENV['KEY_PATH']
+  key_data = [[ENV['KEY_ID'], ENV['KEY_PATH']]]
+  provider :ucamraven, key_data
 end
 ```
 
@@ -32,7 +35,8 @@ For Sinatra and other Rack-based frameworks, you can integrate the strategy into
 
 ```ruby
 use OmniAuth::Builder do
-  provider :ucamraven, ENV['KEY_ID'], ENV['KEY_PATH']
+  key_data = [[ENV['KEY_ID'], ENV['KEY_PATH']]]
+  provider :ucamraven, key_data
 end
 ```
 
@@ -55,8 +59,9 @@ The Ucam-Raven strategy will work straight out of the box but you can apply cust
 
 ```ruby
 use OmniAuth::Builder do
-  opts = { desc: 'my description', msg: 'my message', params: 'string to be returned after login', date: true }
-  provider :ucamraven, ENV['KEY_ID'], ENV['KEY_PATH'], opts
+  key_data = [[1, "path_to_key_1"], [2, "path_to_key_2"], [3, "path_to_key_3"]]
+  options = { desc: 'my description', msg: 'my message', params: 'string to be returned after login', date: true }
+  provider :ucamraven, key_data, options
 end
 ```
 
