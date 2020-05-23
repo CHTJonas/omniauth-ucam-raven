@@ -65,6 +65,15 @@ use OmniAuth::Builder do
 end
 ```
 
+If you are looking to use the strategy with the [SRCF Goose authentication service](https://auth.srcf.net) rather than Raven then you can include the following configuration:
+
+```ruby
+use OmniAuth::Builder do
+  key_data = [[2, "path_to_raven_key"], [500, "path_to_goose_key"]]
+  provider :ucamraven, key_data, honk: true
+end
+```
+
 See the code for the [example Sinatra app](https://github.com/CHTJonas/omniauth-ucam-raven/blob/master/examples/sinatra) for a hands-on example of this and [here](https://github.com/CHTJonas/omniauth-ucam-raven/blob/master/lib/omniauth/strategies/ucam-raven.rb#L14) for a full list of configurable options.
 Each option is fully documented in the [specification](https://github.com/cambridgeuniversity/UcamWebauth-protocol/blob/6e70f1f0223bc30f6963bdb79e06214a482a512e/waa2wls-protocol.txt#L106).
 

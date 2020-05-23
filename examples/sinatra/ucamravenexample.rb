@@ -1,12 +1,13 @@
 class UcamRavenExample < Sinatra::Base
   use Rack::Session::Cookie
   use OmniAuth::Builder do
-    key_data = [[2, "/Users/charlie/Downloads/pubkey2"]]
+    key_data = [[2, "/Users/charlie/Downloads/pubkey2"], [500, "/Users/charlie/Downloads/pubkey500"]]
     options = {
       desc: 'Ucam-Raven Omniauth Strategy - Sinatra Demo',
       msg: 'you are testing login authorisation',
       params: 'This string will always get returned from WLS to WAA.',
-      date: true
+      date: true,
+      honk: true
     }
     provider :ucamraven, key_data, options
   end

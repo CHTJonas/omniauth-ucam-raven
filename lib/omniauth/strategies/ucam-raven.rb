@@ -7,6 +7,8 @@ module OmniAuth
   module Strategies
     class UcamRaven
       include OmniAuth::Strategy
+      RAVEN_URL = 'https://raven.cam.ac.uk/auth/authenticate.html'
+      GOOSE_URL = 'https://auth.srcf.net/wls/authenticate'
 
       # The name of the strategy.
       option :name, 'ucamraven'
@@ -14,7 +16,7 @@ module OmniAuth
       # Query parameters to pass to the WLS.
       # By choice, we only use version 3 so we can support Raven for Life.
       # See: https://github.com/cambridgeuniversity/UcamWebauth-protocol/blob/master/waa2wls-protocol.txt
-      option :url, 'https://raven.cam.ac.uk/auth/authenticate.html'
+      option :url, nil
       option :desc, nil
       option :aauth, nil
       option :iact, nil
@@ -28,6 +30,9 @@ module OmniAuth
       option :key_data, nil
       args :key_data
 
+      # Whether or not to use the SRCF authentication service instead of Raven.
+      option :honk, false
+
       # This method is called when the strategy is instantiated.
       def initialize(*args, &block)
         super(*args, &block)
@@ -40,8 +45,8 @@ module OmniAuth
 
       # This method is called when the user initiates a login. It redirects them to the Raven service for authentication.
       def request_phase
-        url = "#{options.url}?"
-        url << "ver=3"
+        url = (options.url || options.honk ? GOOSE_URL : RAVEN_URL).dup
+        url << "?ver=3"
         url << "&url=#{callback_url}"
         url << "&desc=#{URI::encode options.desc}" if options.desc
         url << "&aauth=#{URI::encode options.aauth}" if options.aauth
