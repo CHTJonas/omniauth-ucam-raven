@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name          = 'omniauth-ucam-raven'
   s.version       = Omniauth::UcamRaven::VERSION
   s.license       = 'MIT'
-  s.summary       = 'OmniAuth strategy for Cambridge University's Raven SSO system'
+  s.summary       = "OmniAuth strategy for Cambridge University's Raven SSO system"
   s.description   = 'This Ruby gem provides an OmniAuth strategy for authenticating using the Raven SSO System, provided by the University of Cambridge, or any other system implementing the Ucam-WebAuth protocol such as the SRCF Goose login service.'
   s.authors       = ['Charlie Jonas']
   s.email         = ['charlie@charliejonas.co.uk']
