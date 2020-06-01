@@ -26,7 +26,7 @@ If you're using Rails, you'll want to add the following to an initialisers e.g. 
 
 ```ruby
 Rails.application.config.middleware.use OmniAuth::Builder do
-  key_data = [[ENV['KEY_ID'], ENV['KEY_PATH']]
+  key_data = [[ENV['KEY_ID'], ENV['KEY_PATH']]]
   provider :ucamraven, key_data
 end
 ```
@@ -35,7 +35,7 @@ For Sinatra and other Rack-based frameworks, you can integrate the strategy into
 
 ```ruby
 use OmniAuth::Builder do
-  key_data = [[ENV['KEY_ID'], ENV['KEY_PATH']]
+  key_data = [[ENV['KEY_ID'], ENV['KEY_PATH']]]
   provider :ucamraven, key_data
 end
 ```
