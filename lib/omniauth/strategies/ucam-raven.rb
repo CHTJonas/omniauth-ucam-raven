@@ -83,7 +83,7 @@ module OmniAuth
 
         # Check that the RSA key ID and signature are correct.
         options.key_data.each do |kid, kpath|
-          if wls_response[12].to_i == kid
+          if wls_response[12].to_i == kid.to_i
             signed_part = wls_response.first(12).join('!')
             base64_part = wls_response[13].tr('-._','+/=')
             signature = Base64.decode64(base64_part)
