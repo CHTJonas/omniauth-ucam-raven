@@ -1,7 +1,7 @@
 PATH
   remote: ../..
   specs:
-    omniauth-ucam-raven (1.0.1)
+    omniauth-ucam-raven (2.0.1)
       omniauth (~> 1.0)
 
 GEM
