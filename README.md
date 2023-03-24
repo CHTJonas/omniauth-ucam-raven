@@ -74,7 +74,7 @@ use OmniAuth::Builder do
 end
 ```
 
-See the code for the [example Sinatra app](https://github.com/CHTJonas/omniauth-ucam-raven/blob/master/examples/sinatra) for a hands-on example of this and [here](https://github.com/CHTJonas/omniauth-ucam-raven/blob/master/lib/omniauth/strategies/ucam-raven.rb#L14) for a full list of configurable options.
+See the code for the [example Sinatra app](https://github.com/CHTJonas/omniauth-ucam-raven/blob/main/examples/sinatra) for a hands-on example of this and [here](https://github.com/CHTJonas/omniauth-ucam-raven/blob/main/lib/omniauth/strategies/ucam-raven.rb#L14) for a full list of configurable options.
 Each option is fully documented in the [specification](https://w3.charliejonas.co.uk/mirror/raven/waa2wls-protocol.txt).
 
 For additional information, please refer to the [OmniAuth wiki](https://github.com/intridea/omniauth/wiki).
