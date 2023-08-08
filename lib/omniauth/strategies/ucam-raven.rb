@@ -1,5 +1,5 @@
 require 'omniauth'
-require 'uri'
+require 'cgi'
 require 'base64'
 require 'openssl'
 
@@ -48,14 +48,14 @@ module OmniAuth
         url = (options.url || options.honk ? GOOSE_URL : RAVEN_URL).dup
         url << "?ver=3"
         url << "&url=#{callback_url}"
-        url << "&desc=#{URI::encode options.desc}" if options.desc
-        url << "&aauth=#{URI::encode options.aauth}" if options.aauth
-        url << "&iact=#{URI::encode options.iact}" if options.iact
-        url << "&msg=#{URI::encode options.msg}" if options.msg
-        url << "&params=#{URI::encode options.params}" if options.params
+        url << "&desc=#{CGI::escape options.desc}" if options.desc
+        url << "&aauth=#{CGI::escape options.aauth}" if options.aauth
+        url << "&iact=#{CGI::escape options.iact}" if options.iact
+        url << "&msg=#{CGI::escape options.msg}" if options.msg
+        url << "&params=#{CGI::escape options.params}" if options.params
         url << "&date=#{date_to_rfc3339}" if options.date
         # The skew parameter is DEPRECATED and SHOULD NOT be included in requests to the WLS.
-        url << "&fail=#{URI::encode options.fail}" if options.fail
+        url << "&fail=#{CGI::escape options.fail}" if options.fail
         redirect url
       end
 
