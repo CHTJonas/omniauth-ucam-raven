@@ -106,7 +106,6 @@ module OmniAuth
       info do
         {
           name: nil,
-          email: email,
           ptags: ptags
         }
       end
@@ -131,15 +130,6 @@ module OmniAuth
       def wls_response
         # ver, status, msg, issue, id, url, principal, ptags, auth, sso, life, params, kid, signature
         @wls_response ||= request.params['WLS-Response'].split('!')
-      end
-
-      def email
-        if ptags.include? 'current'
-          # Only current students/staff will have an internal address.
-          uid + "@cam.ac.uk"
-        else
-          nil
-        end
       end
 
       def ptags
