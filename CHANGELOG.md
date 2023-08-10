@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.0.0] - UNRELEASED
+
+* Replace Raven project page deadlinks with mirrored versions.
+* Update OmniAuth requirement.
+* Rename default branch.
+* Migrate from use of URI::encode to CGI::escape instead.
+* Rename auth strategy to match gem name.
+* Remove email from authentication info hash.
+* Load RSA keys from a single specified directory.
+
 ## [2.0.1] - 2020-06-03
 
 * Cast the RSA key ID to an integer when verifying authentication signatures.
