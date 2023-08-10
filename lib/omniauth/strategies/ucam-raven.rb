@@ -7,11 +7,13 @@ module OmniAuth
   module Strategies
     class UcamRaven
       include OmniAuth::Strategy
+
+      # Built-in WLS endpoints.
       RAVEN_URL = 'https://raven.cam.ac.uk/auth/authenticate.html'
       GOOSE_URL = 'https://auth.srcf.net/wls/authenticate'
 
       # The name of the strategy.
-      option :name, 'ucamraven'
+      option :name, 'ucam-raven'
 
       # Query parameters to pass to the WLS.
       # By choice, we only use version 3 so we can support Raven for Life.
@@ -194,3 +196,5 @@ module OmniAuth
 end
 
 OmniAuth.config.add_camelization "ucamraven", "UcamRaven"
+OmniAuth.config.add_camelization "ucam-raven", "UcamRaven"
+OmniAuth.config.add_camelization "ucam_raven", "UcamRaven"
