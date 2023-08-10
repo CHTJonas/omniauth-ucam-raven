@@ -28,9 +28,8 @@ module OmniAuth
       option :skew, 45 # the spec states that a time of 30-60 seconds is probably appropriate
       option :fail, nil
 
-      # An array of RSA key IDs and paths to the location where the keys are stored.
-      option :key_data, nil
-      args :key_data
+      # Path to the directory used to store RSA public keys.
+      args :keys_dir
 
       # Whether or not to use the SRCF authentication service instead of Raven.
       option :honk, false
@@ -38,16 +37,18 @@ module OmniAuth
       # This method is called when the strategy is instantiated.
       def initialize(*args, &block)
         super(*args, &block)
-        raise 'Raven public key data not given' if options.key_data.nil?
-        raise 'Raven public key data not correctly formatted' unless options.key_data.is_a?(Array)
-        options.key_data.each do |e|
-          raise 'Raven public key data not correctly formatted' unless e.is_a?(Array) && e.length == 2
-        end
+        raise 'RSA public key directory not setup' if options.keys_dir.nil?
+        raise 'RSA public key directory must exist' unless Dir.exist?(options.keys_dir)
       end
 
       # This method is called when the user initiates a login. It redirects them to the Raven service for authentication.
       def request_phase
-        url = (options.url || options.honk ? GOOSE_URL : RAVEN_URL).dup
+        url = (
+          if options.url
+            options.url
+          else
+            options.honk ? GOOSE_URL : RAVEN_URL
+          end).dup
         url << "?ver=3"
         url << "&url=#{callback_url}"
         url << "&desc=#{CGI::escape options.desc}" if options.desc
@@ -84,19 +85,17 @@ module OmniAuth
         return fail!(:skew_too_large) unless skew.abs < options.skew
 
         # Check that the RSA key ID and signature are correct.
-        options.key_data.each do |kid, kpath|
-          if wls_response[12].to_i == kid.to_i
-            signed_part = wls_response.first(12).join('!')
-            base64_part = wls_response[13].tr('-._','+/=')
-            signature = Base64.decode64(base64_part)
-            file_contents = File.read(kpath)
-            key = OpenSSL::PKey::RSA.new(file_contents)
-            digest  = OpenSSL::Digest::SHA1.new
-            return fail!(:rsa_signature_check_failed) unless key.verify(digest, signature, signed_part)
-            return super
-          end
-        end
-        return fail!(:unknown_rsa_key_id)
+        key_id = wls_response[12].to_i.to_s # avoid any funny business
+        key_path = File.join(options.keys_dir, key_id)
+        return fail!(:rsa_key_not_found) unless File.exist?(key_path)
+        key_contents = File.read(key_path)
+        key = OpenSSL::PKey::RSA.new(key_contents)
+        signed_part = wls_response.first(12).join('!')
+        base64_part = wls_response[13].tr('-._','+/=')
+        signature = Base64.decode64(base64_part)
+        digest = OpenSSL::Digest::SHA1.new
+        return fail!(:rsa_signature_check_failed) unless key.verify(digest, signature, signed_part)
+        return super
       end
 
       uid do
