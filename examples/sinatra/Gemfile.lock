@@ -1,12 +1,14 @@
 PATH
   remote: ../..
   specs:
-    omniauth-ucam-raven (2.0.1)
-      omniauth (>= 1, < 3)
+    omniauth-ucam-raven (3.0.0.pre.rc1)
+      omniauth (~> 2.1)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    daemons (1.4.1)
+    eventmachine (1.2.7)
     hashie (5.0.0)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
@@ -23,6 +25,10 @@ GEM
       rack (~> 2.2, >= 2.2.4)
       rack-protection (= 3.0.4)
       tilt (~> 2.0)
+    thin (1.8.2)
+      daemons (~> 1.0, >= 1.0.9)
+      eventmachine (~> 1.0, >= 1.0.4)
+      rack (>= 1, < 3)
     tilt (2.0.11)
 
 PLATFORMS
@@ -31,6 +37,7 @@ PLATFORMS
 DEPENDENCIES
   omniauth-ucam-raven!
   sinatra
+  thin
 
 BUNDLED WITH
    2.1.4

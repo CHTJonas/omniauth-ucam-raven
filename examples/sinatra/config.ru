@@ -3,5 +3,5 @@ require 'bundler'
 
 Bundler.require
 
-require './ucamravenexample'
+require './ucam_raven_example'
 run UcamRavenExample.run!
