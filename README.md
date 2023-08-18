@@ -1,3 +1,7 @@
+> **Warning**
+> If you are viewing this README on the `main` branch then please note that this may contain as yet unreleased changes.
+> You probably want to checkout a tag using the GitHub interface and view documentation for that specific version.
+
 # Raven OmniAuth strategy
 
 This Ruby gem provides an OmniAuth strategy for authenticating using the [Raven SSO System](https://raven.cam.ac.uk), provided by the University of Cambridge.
