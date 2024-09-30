@@ -2,7 +2,7 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'omniauth-ucam-raven/version'
 
-Gem::Specification.new do |s|
+Gem::Specification.new do |spec|
   spec.name          = 'omniauth-ucam-raven'
   spec.version       = Omniauth::UcamRaven::VERSION
   spec.license       = 'MIT'
